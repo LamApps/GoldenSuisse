@@ -1,0 +1,90 @@
+$fc-calendar-height: 650px;
+$border-color: #333;
+$today-color: #202020;
+
+:root {
+    --fc-button-text-color: #fff;
+    --fc-button-bg-color: #000000;
+    --fc-button-border-color: #222222;
+    --fc-button-hover-bg-color: rgba(251, 195, 74, 0.1);
+    --fc-button-hover-border-color: #725922;
+    --fc-button-active-bg-color: rgba(251, 195, 74, 0.1);
+    --fc-button-active-border-color: #725922;
+
+    --fc-page-bg-color: #000000;
+    --fc-list-event-hover-bg-color: #222;
+}
+
+.fc {
+    td,
+    th {
+        border: 1px solid $border-color;
+        &.fc-col-header-cell {
+        border-right: 0;
+        border-left: 0;
+        }
+    }
+    .fc-scrollgrid {
+        border: 1px solid $border-color;
+        border-right: 0;
+        border-bottom: 0;
+    }
+    .fc-daygrid-day.fc-day-today {
+        background-color: $today-color;
+    }
+    .fc-button:focus {
+        box-shadow: none;
+    }
+    .fc-button-primary:not(:disabled).fc-button-active:focus {
+        box-shadow: none;
+    }
+    .fc-header-toolbar {
+        .fc-toolbar-chunk:first-child {
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+.fc-daygrid-block-event.event-primary, .fc-timegrid-event.event-primary {
+    background-color: #FBC34A;
+    border-color: #FBC34A;
+}
+.fc-daygrid-block-event.event-primary .fc-event-title, .fc-timegrid-event.event-primary .fc-event-main-frame {
+    color: black;
+}
+
+.fc-daygrid-block-event.event-danger, .fc-timegrid-event.event-danger {
+    background-color: #ec4920;
+    border-color: #ec4920;
+}
+.fc-daygrid-block-event.event-success, .fc-timegrid-event.event-success {
+    background-color: #387e2a;
+    border-color: #387e2a;
+}
+.event-primary > .fc-daygrid-event-dot, .event-primary .fc-list-event-dot {
+    border-color: #FBC34A;
+}
+
+.event-danger > .fc-daygrid-event-dot, .event-danger .fc-list-event-dot {
+    border-color: #ec4920;
+}
+
+.event-success > .fc-daygrid-event-dot, .event-success .fc-list-event-dot {
+    border-color: #387e2a;
+}
+
+@media(max-width: 767px) {
+    .fc-toolbar.fc-header-toolbar {
+      display: flex;
+      flex-direction: column;
+    }
+    .fc-toolbar.fc-header-toolbar .fc-left {
+      order: 3;
+    }
+    .fc-toolbar.fc-header-toolbar .fc-center {
+      order: 1;
+    }
+    .fc-toolbar.fc-header-toolbar .fc-right {
+      order: 2;
+    }
+  }
