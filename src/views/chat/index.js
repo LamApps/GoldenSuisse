@@ -491,25 +491,22 @@ const Chat = props => {
   // };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid container>
-        <Grid item xs={12} sm={12} md={4}>
-          <Contacts store={store} />
-        </Grid>
-        <Grid item xs={12} sm={12} md={8} sx={{p:3, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <Conversation
-              store={store}
-              handleUser={handleUser}
-              opponentTyping = {store.selectedChat.room && opponentTyping[store.selectedChat.room.id]}
-              scrollToBottom = {scrollToBottom}
-              socketSendTyping={socketSendTyping}
-              socketSendMessage={socketSendMessage}
-              socketOpenMessage={socketOpenMessage}
-            />
-        </Grid>
+    <Grid container>
+      <Grid item xs={12} sm={12} md={4}>
+        <Contacts store={store} />
       </Grid>
-    </Box>
-
+      <Grid item xs={12} sm={12} md={8} sx={{p:3, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <Conversation
+            store={store}
+            handleUser={handleUser}
+            opponentTyping = {store.selectedChat.room && opponentTyping[store.selectedChat.room.id]}
+            scrollToBottom = {scrollToBottom}
+            socketSendTyping={socketSendTyping}
+            socketSendMessage={socketSendMessage}
+            socketOpenMessage={socketOpenMessage}
+          />
+      </Grid>
+    </Grid>
   )
 }
 

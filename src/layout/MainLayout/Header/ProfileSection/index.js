@@ -45,6 +45,7 @@ import { IconSettings } from '@tabler/icons';
 const ProfileSection = () => {
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
+    const userData = useSelector((state) => state.auth.userData);
     const navigate = useNavigate();
 
     const [sdm, setSdm] = useState(true);
@@ -98,7 +99,7 @@ const ProfileSection = () => {
                     justifyContent: 'flex-end'
                 }}
             >
-                <Typography component="p" variant="p" sx={{marginX: '20px'}}>Advisor</Typography>
+                <Typography component="p" variant="p" sx={{marginX: '20px'}}>{userData.role && userData.role.charAt(0).toUpperCase() + userData.role.slice(1)}</Typography>
                 <ButtonBase sx={{ marginLeft: '10px', borderRadius: '12px', overflow: 'hidden' }}>
                     <Avatar
                         variant="rounded"
@@ -118,14 +119,15 @@ const ProfileSection = () => {
                         <IconSettings stroke={1.5} size="1.3rem" />
                     </Avatar>
                 </ButtonBase>
-                <ButtonBase sx={{ borderRadius: '12px' }}>
+                <ButtonBase sx={{borderRadius: '50%'}}>
                     <Avatar
-                        src={User1}
+                        src={userData.avatar_url}
                         sx={{
                             ...theme.typography.mediumAvatar,
-                            margin: '8px 0 8px 8px !important',
+                            margin: '8px !important',
                             cursor: 'pointer'
                         }}
+                        alt={userData.fullName}
                         ref={anchorRef}
                         aria-controls={open ? 'menu-list-grow' : undefined}
                         aria-haspopup="true"

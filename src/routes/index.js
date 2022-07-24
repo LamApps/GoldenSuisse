@@ -9,11 +9,11 @@ import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 
 // login option 3 routing
-const Login = Loadable(lazy(() => import('../views/login/Login')));
+const Login = Loadable(lazy(() => import('../views/login')));
 
-const Portfolio = Loadable(lazy(() => import('views/portfolio/Portfolio')));
+const Portfolio = Loadable(lazy(() => import('views/portfolio')));
 const PortfolioGraph = Loadable(lazy(() => import('views/portfolio/PortfolioGraph')));
-const Clients = Loadable(lazy(() => import('views/clients/Clients')));
+const Clients = Loadable(lazy(() => import('views/clients')));
 const ClientDetails = Loadable(lazy(() => import('views/clients/ClientDetails')));
 const ClientOverview = Loadable(lazy(() => import('views/clients/ClientOverview')));
 const ClientGraph = Loadable(lazy(() => import('views/clients/ClientGraph')));
@@ -21,7 +21,8 @@ const ClientProfile = Loadable(lazy(() => import('views/clients/ClientProfile'))
 const ClientReports = Loadable(lazy(() => import('views/clients/ClientReports')));
 const ClientFees = Loadable(lazy(() => import('views/clients/ClientFees')));
 const Chat = Loadable(lazy(() => import('views/chat')));
-const Calendar = Loadable(lazy(() => import('views/calendar/Calendar')));
+const Calendar = Loadable(lazy(() => import('views/calendar')));
+const Email = Loadable(lazy(() => import('views/email')));
 
 const AppRoutes = () => {
 
@@ -54,6 +55,7 @@ const AppRoutes = () => {
                 </Route>
                 <Route path="chat" element={<Chat />} />
                 <Route path="calendar" element={<Calendar />} />
+                <Route path="email" element={<Email />} />
             </Route>
 
         </Routes>

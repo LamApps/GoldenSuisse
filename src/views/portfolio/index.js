@@ -179,80 +179,78 @@ const Portfolio = props => {
   }
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Stack>
-        <Grid container>
-          <Grid item xs={12} sm={12} md={4}>
-            <Block>
-              <Box sx={{display: 'flex', mb: '30px'}}>
-                <Box sx={{width: {xs: '40%', sm: '50%'}}}>
-                  <Avatar alt={userData.fullName} src={userData.avatar_url} sx={{ width: {xs: '90%', sm: 120}, height: {xs: 'auto', sm: 120} }}></Avatar>
-                </Box>
-                <Box sx={{width: {xs: '60%', sm: '50%'}}}>
-                  <Typography component="p" variant="h2">{userData.fullName}</Typography>
-                  <Typography component="p" variant="body1">{userData.role && userData.role.charAt(0).toUpperCase() + userData.role.slice(1)}</Typography>
-                  <Typography component="p" variant="body1" sx={{mb: '20px'}}>{userData?.city} {userData?.country}</Typography>
-                  {/* <Link href="#" underline="none">Edit</Link> */}
-                </Box>
+    <>
+      <Grid container>
+        <Grid item xs={12} sm={12} md={4}>
+          <Block>
+            <Box sx={{display: 'flex', mb: '30px'}}>
+              <Box sx={{width: {xs: '40%', sm: '50%'}}}>
+                <Avatar alt={userData.fullName} src={userData.avatar_url} sx={{ width: {xs: '90%', sm: 120}, height: {xs: 'auto', sm: 120} }}></Avatar>
               </Box>
-              <Box sx={{display: 'flex', mb: '30px'}}>
-                <Box sx={{width: {xs: '40%', sm: '50%'}}}>
-                  {/* <Typography component="p" variant="body2">Bonus</Typography> */}
-                  <Typography component="p" variant="body2">Registered</Typography>
-                  <Typography component="p" variant="body2">Status</Typography>
-                </Box>
-                <Box sx={{width: {xs: '60%', sm: '50%'}}}>
-                  {/* <Typography component="p" variant="body1">0.2%</Typography> */}
-                  <Typography component="p" variant="body1">{formatDate(userData?.registered_at)}</Typography>
-                  <Typography component="p" variant="body1">{userData.client_status && userData.client_status.charAt(0).toUpperCase() + userData.client_status.slice(1)}</Typography>
-                </Box>
+              <Box sx={{width: {xs: '60%', sm: '50%'}}}>
+                <Typography component="p" variant="h2">{userData.fullName}</Typography>
+                <Typography component="p" variant="body1">{userData.role && userData.role.charAt(0).toUpperCase() + userData.role.slice(1)}</Typography>
+                <Typography component="p" variant="body1" sx={{mb: '20px'}}>{userData?.city} {userData?.country}</Typography>
+                {/* <Link href="#" underline="none">Edit</Link> */}
               </Box>
-              <Link href="#" underline="none">Details</Link>
-            </Block>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Block sx={{padding: 0}}>
-              <Box sx={{height: '40%', padding: '20px', borderBottom: 'solid 1px #202020'}}>
-                <Typography component="p" variant="h1">{currencyFormat(total, 2)} <sup style={{fontSize: 18, fontWeight: 100}}>EUR</sup></Typography>
-                <Typography component="p" variant="body1">Assets Under Custody</Typography>
+            </Box>
+            <Box sx={{display: 'flex', mb: '30px'}}>
+              <Box sx={{width: {xs: '40%', sm: '50%'}}}>
+                {/* <Typography component="p" variant="body2">Bonus</Typography> */}
+                <Typography component="p" variant="body2">Registered</Typography>
+                <Typography component="p" variant="body2">Status</Typography>
               </Box>
-              <Box sx={{height: '60%', padding: '20px'}}>
-                <Typography component="p" variant="h1">{store?.total}</Typography>
-                <Typography component="p" variant="body1" sx={{mb: '20px'}}>Total Clients</Typography>
-                <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                  <Stack direction="row" spacing={2}>
-                    {
-                      store?.data.map((client)=><ClientAvatar key={client.id} name={client.fullName} avatar={client.avatar} />)
-                    }
-                  </Stack>
-                  <IconButton onClick={()=>{navigate('/clients')}}>
-                    <IconUsers size={36} stroke={1}/>
-                  </IconButton>
-                </Box>
+              <Box sx={{width: {xs: '60%', sm: '50%'}}}>
+                {/* <Typography component="p" variant="body1">0.2%</Typography> */}
+                <Typography component="p" variant="body1">{formatDate(userData?.registered_at)}</Typography>
+                <Typography component="p" variant="body1">{userData.client_status && userData.client_status.charAt(0).toUpperCase() + userData.client_status.slice(1)}</Typography>
               </Box>
-            </Block>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Block>
-              <Paper sx={{height: '100%', position: 'relative', p: 2}}>
-                <Chart options={chartOptions} series={chartSeries} type="donut" />
-                <IconButton onClick={()=>{navigate('/portfolio/graph')}} sx={{position: 'absolute', bottom: '10px', right: '10px'}}>
-                    <IconCirclePlus size={24} stroke={1} />
-                </IconButton>
-              </Paper>
-            </Block>
-          </Grid>
-        </Grid>
-        <Box sx={{ flexGrow: 1 }}>
-          <Block sx={{outline: 'none', borderTop: 'solid 1px #202020'}}>
-            <Typography component="p" variant="h1" sx={{mb: 3}}>AUC</Typography>
-            {
-              balances.map((balance)=><TableRow key={balance.type} moneyType={balance.type} amount={balance.current_balance} percentage={balance.percent}></TableRow>)
-            }
+            </Box>
+            <Link href="#" underline="none">Details</Link>
           </Block>
-        </Box>
-      </Stack>
-    </Box>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <Block sx={{padding: 0}}>
+            <Box sx={{height: '40%', padding: '20px', borderBottom: 'solid 1px #202020'}}>
+              <Typography component="p" variant="h1">{currencyFormat(total, 2)} <sup style={{fontSize: 18, fontWeight: 100}}>EUR</sup></Typography>
+              <Typography component="p" variant="body1">Assets Under Custody</Typography>
+            </Box>
+            <Box sx={{height: '60%', padding: '20px'}}>
+              <Typography component="p" variant="h1">{store?.total}</Typography>
+              <Typography component="p" variant="body1" sx={{mb: '20px'}}>Total Clients</Typography>
+              <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                <Stack direction="row" spacing={2}>
+                  {
+                    store?.data.map((client)=><ClientAvatar key={client.id} name={client.fullName} avatar={client.avatar} />)
+                  }
+                </Stack>
+                <IconButton onClick={()=>{navigate('/clients')}}>
+                  <IconUsers size={36} stroke={1}/>
+                </IconButton>
+              </Box>
+            </Box>
+          </Block>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <Block>
+            <Paper sx={{height: '100%', position: 'relative', p: 2}}>
+              <Chart options={chartOptions} series={chartSeries} type="donut" />
+              <IconButton onClick={()=>{navigate('/portfolio/graph')}} sx={{position: 'absolute', bottom: '10px', right: '10px'}}>
+                  <IconCirclePlus size={24} stroke={1} />
+              </IconButton>
+            </Paper>
+          </Block>
+        </Grid>
+      </Grid>
+      <Box sx={{ flexGrow: 1 }}>
+        <Block sx={{outline: 'none', borderTop: 'solid 1px #202020'}}>
+          <Typography component="p" variant="h1" sx={{mb: 3}}>AUC</Typography>
+          {
+            balances.map((balance)=><TableRow key={balance.type} moneyType={balance.type} amount={balance.current_balance} percentage={balance.percent}></TableRow>)
+          }
+        </Block>
+      </Box>
+    </>
   )
 }
 
