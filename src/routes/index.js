@@ -24,28 +24,45 @@ const Chat = Loadable(lazy(() => import('views/chat')));
 const Calendar = Loadable(lazy(() => import('views/calendar')));
 const Email = Loadable(lazy(() => import('views/email')));
 
+const Advisors = Loadable(lazy(() => import('views/advisors')));
+const AdvisorView = Loadable(lazy(() => import('views/advisors/AdvisorView')));
+const AdvisorEdit = Loadable(lazy(() => import('views/advisors/AdvisorEdit')));
+
 const AppRoutes = () => {
 
-    const auth = useSelector(state => state.auth.accessToken);
+    const auth = useSelector(state => state.auth);
+    const role = auth.userData.role;
+    console.log(role)
     return (
         <Routes>
             <Route exact path="/" element={<MinimalLayout/>} >
                 <Route index element={
-                    auth === "" ? <Login /> : <Navigate to="/portfolio" />
+                    auth.accessToken === "" ? <Login /> : <Navigate to={role === 'admin' ? "/advisors" : "/portfolio"} />
                 }/>
                 <Route exact path="login" element={
-                    auth === "" ? <Login /> : <Navigate to="/portfolio" />
+                    auth.accessToken === "" ? <Login /> : <Navigate to={role === 'admin' ? "/advisors" : "/portfolio"} />
                 } />
             </Route>
             <Route
                 path="/"
                 element={
-                    auth === "" ? <Navigate to="/login" /> : <MainLayout />
+                    auth.accessToken === "" ? <Navigate to="/login" /> : <MainLayout />
                 }
             >
-                <Route path="portfolio" element={<Portfolio />} />
-                <Route exact path="portfolio/graph" element={<PortfolioGraph />} />
-                <Route path="clients" element={<Clients />} />
+                {
+                    role === 'admin' ? <>
+                        <Route path="advisors" element={<Advisors />} />
+                        <Route path="advisor/view/:id" element={<AdvisorView />} />
+                        <Route path="advisor/edit/:id" element={<AdvisorEdit />} />
+                    </> : <>
+                        <Route path="portfolio" element={<Portfolio />} />
+                        <Route exact path="portfolio/graph" element={<PortfolioGraph />} />
+                        <Route path="clients" element={<Clients />} />
+                        <Route path="chat" element={<Chat />} />
+                        <Route path="calendar" element={<Calendar />} />
+                        <Route path="email" element={<Email />} />
+                    </>
+                }
                 <Route path="client/details" element={<ClientDetails />}>
                     <Route path="overview/:id" element={<ClientOverview />} />
                     <Route path="graph/:id" element={<ClientGraph />} />
@@ -53,9 +70,6 @@ const AppRoutes = () => {
                     <Route path="reports/:id" element={<ClientReports />} />
                     <Route path="fees/:id" element={<ClientFees />} />
                 </Route>
-                <Route path="chat" element={<Chat />} />
-                <Route path="calendar" element={<Calendar />} />
-                <Route path="email" element={<Email />} />
             </Route>
 
         </Routes>

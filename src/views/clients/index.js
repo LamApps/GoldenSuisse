@@ -149,71 +149,69 @@ const Clients = props => {
   }
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Stack>
-        <Grid container>
-          <Grid item xs={12} sm={12} md={4}>
-            <Block>
-              <Typography component="p" variant="h1">{store?.allData.length}</Typography>
-              <Typography component="p" variant="body1">Total Clients</Typography>
-            </Block>
-          </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            <Block>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel sx={{color: 'white'}} htmlFor="search-box">Search</InputLabel>
-              <OutlinedInput
-                id="search-box"
-                sx={{color:'white'}}
-                onChange={e => handleFilter(e.target.value)}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="search icon"
-                      edge="end"
-                    >
-                      <IconSearch />
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Search"
-              />
-            </FormControl>
-            </Block>
-          </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            <Block>
-              <Paper sx={{p:2}}>
-                <Stack direction="row" spacing={2}>
-                  <CircleButton onClick={()=>handleStatus('')} sx={currentStatus==='' ? activeButtonStyle: {}}>ALL</CircleButton>
-                  <CircleButton onClick={()=>handleStatus('pending')} sx={currentStatus==='pending' ? activeButtonStyle: {}}>PENDING</CircleButton>
-                  <CircleButton onClick={()=>handleStatus('active')} sx={currentStatus==='active' ? activeButtonStyle: {}}>ACTIVE</CircleButton>
-                </Stack>
-              </Paper>
-            </Block>
-          </Grid>
-        </Grid>
-        <Box sx={{ flexGrow: 1 }}>
-          <Block sx={{outline: 'none', borderTop: 'solid 1px #202020'}}>
-            <Typography component="p" variant="h1">{searchTerm===''?'Clients':'Search: '+searchTerm}</Typography>
-            {store.data.length>0 ? <>
-              <Box sx={{display: 'flex', alignItems: 'center', height: '40px', my: '5px'}}>
-                <Box sx={{flexGrow: 1}}><Typography component="p" variant="body2">Name</Typography></Box>
-                <Box sx={{width: '150px', display: { xs: 'none', sm: 'block'}}}><Typography component="p" variant="body2">Total holdings</Typography></Box>
-                <Box sx={{width: '150px', display: { xs: 'none', sm: 'block'}}}><Typography component="p" variant="body2">Status</Typography></Box>
-                <Box sx={{width: '120px'}}></Box>
-              </Box>
-              {
-                store.data.map((item)=><AucTableRow key={item.id} id={item.id} avatar={item.avatar} name={item.fullName} isOnline amount={item.fee_year} status={item.status} income={0}></AucTableRow>)
-              }
-
-              <Pagination count={Number(Math.ceil(store.total / rowsPerPage))} sx={{mt: 3}} onChange={(e, value) => handlePagination(value)} />
-            </>:<Typography>No Data Available</Typography> }
-            
+    <>
+      <Grid container>
+        <Grid item xs={12} sm={12} md={4}>
+          <Block>
+            <Typography component="p" variant="h1">{store?.allData.length}</Typography>
+            <Typography component="p" variant="body1">Total Clients</Typography>
           </Block>
-        </Box>
-      </Stack>
-    </Box>
+        </Grid>
+        <Grid item xs={12} sm={12} md={4}>
+          <Block>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel sx={{color: 'white'}} htmlFor="search-box">Search</InputLabel>
+            <OutlinedInput
+              id="search-box"
+              sx={{color:'white'}}
+              onChange={e => handleFilter(e.target.value)}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="search icon"
+                    edge="end"
+                  >
+                    <IconSearch />
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Search"
+            />
+          </FormControl>
+          </Block>
+        </Grid>
+        <Grid item xs={12} sm={12} md={4}>
+          <Block>
+            <Paper sx={{p:2}}>
+              <Stack direction="row" spacing={2}>
+                <CircleButton onClick={()=>handleStatus('')} sx={currentStatus==='' ? activeButtonStyle: {}}>ALL</CircleButton>
+                <CircleButton onClick={()=>handleStatus('pending')} sx={currentStatus==='pending' ? activeButtonStyle: {}}>PENDING</CircleButton>
+                <CircleButton onClick={()=>handleStatus('active')} sx={currentStatus==='active' ? activeButtonStyle: {}}>ACTIVE</CircleButton>
+              </Stack>
+            </Paper>
+          </Block>
+        </Grid>
+      </Grid>
+      <Box sx={{ flexGrow: 1 }}>
+        <Block sx={{outline: 'none', borderTop: 'solid 1px #202020'}}>
+          <Typography component="p" variant="h1">{searchTerm===''?'Clients':'Search: '+searchTerm}</Typography>
+          {store.data.length>0 ? <>
+            <Box sx={{display: 'flex', alignItems: 'center', height: '40px', my: '5px'}}>
+              <Box sx={{flexGrow: 1}}><Typography component="p" variant="body2">Name</Typography></Box>
+              <Box sx={{width: '150px', display: { xs: 'none', sm: 'block'}}}><Typography component="p" variant="body2">Total holdings</Typography></Box>
+              <Box sx={{width: '150px', display: { xs: 'none', sm: 'block'}}}><Typography component="p" variant="body2">Status</Typography></Box>
+              <Box sx={{width: '120px'}}></Box>
+            </Box>
+            {
+              store.data.map((item)=><AucTableRow key={item.id} id={item.id} avatar={item.avatar} name={item.fullName} isOnline amount={item.fee_year} status={item.status} income={0}></AucTableRow>)
+            }
+
+            <Pagination count={Number(Math.ceil(store.total / rowsPerPage))} sx={{mt: 3}} onChange={(e, value) => handlePagination(value)} />
+          </>:<Typography>No Data Available</Typography> }
+          
+        </Block>
+      </Box>
+    </>
   )
 }
 

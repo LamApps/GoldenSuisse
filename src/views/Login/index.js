@@ -28,7 +28,6 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 import useJwt from 'utils/jwt/useJwt';
 import { useDispatch } from 'react-redux';
-import { AbilityContext } from 'utils/context/can';
 import { SocketContext } from 'utils/context/socketContext';
 import { handleLogin } from 'store/actions';
 import { useForm, Controller  } from 'react-hook-form';
@@ -57,7 +56,6 @@ const loginHelper = {
   }
 }
 const Login = props => {
-  const ability = useContext(AbilityContext)
   const dispatch = useDispatch();
   const socket = useContext(SocketContext);
   const { control, handleSubmit } = useForm({
@@ -84,12 +82,6 @@ const Login = props => {
           const data = res.data.ResponseResult
           dispatch(handleLogin(data))
           socket.emit('login', {'token': res.data.ResponseResult.access_token})
-          ability.update([
-            {
-              action: 'manage',
-              subject: 'all'
-            }
-          ])
         } else {
           setSnackBarMsg(res.data.ResponseMessage);
           setSnackBarOpen(true);

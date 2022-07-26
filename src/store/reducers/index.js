@@ -3,6 +3,7 @@ import customizationReducer from './customizationReducer';
 import calendarReducer from './calendar';
 import clientsReducer from './clients';
 import chatReducer from './chat';
+import usersReducer from './user';
 import useJwt from 'utils/jwt/useJwt';
 
 const config = useJwt.jwtConfig;
@@ -39,6 +40,7 @@ const reducer = {
     calendar: calendarReducer,
     clients: clientsReducer,
     chat: chatReducer,
+    users: usersReducer,
 };
 
 

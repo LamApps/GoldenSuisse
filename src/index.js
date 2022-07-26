@@ -6,9 +6,7 @@ import { store } from './store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import {ability} from './config'
 import { SocketProvider } from './utils/context/socketContext';
-import { AbilityContext } from './utils/context/can';
 
 
 // style + assets
@@ -22,11 +20,9 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <AbilityContext.Provider value={ability}>
           <SocketProvider>
             <App />
           </SocketProvider>
-        </AbilityContext.Provider>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>

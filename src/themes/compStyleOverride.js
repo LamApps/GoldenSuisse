@@ -207,5 +207,12 @@ export default function componentStyleOverrides(theme) {
                 },
             }
         },
+        MuiDataGrid: {
+            styleOverrides: {
+                root: {
+                    color: theme.colors?.primaryLight,
+                },
+            }
+        }
     };
 }

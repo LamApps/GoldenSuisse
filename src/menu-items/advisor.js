@@ -1,6 +1,6 @@
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
-const dashboard = [
+const advisorMenus = [
     {
         id: 'portfolio',
         title: 'PORTFOLIO',
@@ -28,4 +28,4 @@ const dashboard = [
     },
 ];
 
-export default dashboard;
+export default advisorMenus;
