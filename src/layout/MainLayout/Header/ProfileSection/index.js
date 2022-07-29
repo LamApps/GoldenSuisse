@@ -1,93 +1,47 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useContext } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
     Avatar,
     Box,
-    Card,
-    CardContent,
+    Menu,
+    MenuItem,
     ButtonBase,
-    Chip,
-    ClickAwayListener,
-    Divider,
-    Grid,
-    InputAdornment,
-    List,
-    ListItemButton,
+    Typography,
     ListItemIcon,
     ListItemText,
-    OutlinedInput,
-    Paper,
-    Popper,
-    Stack,
-    Switch,
-    Typography
+    Divider,
 } from '@mui/material';
 
-// third-party
-import PerfectScrollbar from 'react-perfect-scrollbar';
+import { SocketContext } from 'utils/context/socketContext';
+import { handleLogout } from 'store/actions';
 
-// project imports
-import MainCard from 'ui-component/cards/MainCard';
-import Transitions from 'ui-component/extended/Transitions';
-import UpgradePlanCard from './UpgradePlanCard';
-import User1 from 'assets/images/users/user-round.svg';
+import useJwt from 'utils/jwt/useJwt';
 
-// assets
-import { IconSettings } from '@tabler/icons';
+import { IconUser, IconLogout } from '@tabler/icons'
+
 
 // ==============================|| PROFILE MENU ||============================== //
 
 const ProfileSection = () => {
     const theme = useTheme();
-    const customization = useSelector((state) => state.customization);
+    const socket = useContext(SocketContext)
     const userData = useSelector((state) => state.auth.userData);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const [sdm, setSdm] = useState(true);
-    const [value, setValue] = useState('');
-    const [notification, setNotification] = useState(false);
-    const [selectedIndex, setSelectedIndex] = useState(-1);
-    const [open, setOpen] = useState(false);
-    /**
-     * anchorRef is used on different componets and specifying one type leads to other components throwing an error
-     * */
-    const anchorRef = useRef(null);
-    const handleLogout = async () => {
-        console.log('Logout');
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
     };
-
-    const handleClose = (event) => {
-        if (anchorRef.current && anchorRef.current.contains(event.target)) {
-            return;
-        }
-        setOpen(false);
+    const handleClose = () => {
+      setAnchorEl(null);
     };
-
-    const handleListItemClick = (event, index, route = '') => {
-        setSelectedIndex(index);
-        handleClose(event);
-
-        if (route && route !== '') {
-            navigate(route);
-        }
-    };
-    const handleToggle = () => {
-        setOpen((prevOpen) => !prevOpen);
-    };
-
-    const prevOpen = useRef(open);
-    useEffect(() => {
-        if (prevOpen.current === true && open === false) {
-            anchorRef.current.focus();
-        }
-
-        prevOpen.current = open;
-    }, [open]);
 
     return (
         <>
@@ -100,7 +54,7 @@ const ProfileSection = () => {
                 }}
             >
                 <Typography component="p" variant="p" sx={{marginX: '20px'}}>{userData.role && userData.role.charAt(0).toUpperCase() + userData.role.slice(1)}</Typography>
-                <ButtonBase sx={{ marginLeft: '10px', borderRadius: '12px', overflow: 'hidden' }}>
+                {/* <ButtonBase sx={{ marginLeft: '10px', borderRadius: '12px', overflow: 'hidden' }}>
                     <Avatar
                         variant="rounded"
                         sx={{
@@ -118,7 +72,7 @@ const ProfileSection = () => {
                     >
                         <IconSettings stroke={1.5} size="1.3rem" />
                     </Avatar>
-                </ButtonBase>
+                </ButtonBase> */}
                 <ButtonBase sx={{borderRadius: '50%'}}>
                     <Avatar
                         src={userData.avatar_url}
@@ -128,12 +82,39 @@ const ProfileSection = () => {
                             cursor: 'pointer'
                         }}
                         alt={userData.fullName}
-                        ref={anchorRef}
                         aria-controls={open ? 'menu-list-grow' : undefined}
                         aria-haspopup="true"
                         color="inherit"
+                        onClick={handleClick}
                     />
                 </ButtonBase>
+                <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                    }}
+                >
+                    <MenuItem onClick={()=>{navigate('/profile')}}>
+                        <ListItemIcon>
+                            <IconUser size={16} stroke={1} />
+                        </ListItemIcon>
+                        <ListItemText>Profile</ListItemText>
+                    </MenuItem>
+                    <Divider />
+                    <MenuItem onClick={e => {
+                    e.stopPropagation();
+                    socket.emit('logout', useJwt.getToken());
+                    dispatch(handleLogout())
+                    }}>
+                        <ListItemIcon>
+                            <IconLogout size={16} stroke={1} />
+                        </ListItemIcon>
+                        <ListItemText>Log out</ListItemText>
+                    </MenuItem>
+                </Menu>
             </Box>
         </>
     );

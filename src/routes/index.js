@@ -7,7 +7,6 @@ import MainLayout from 'layout/MainLayout';
 
 // project imports
 import Loadable from 'ui-component/Loadable';
-
 // login option 3 routing
 const Login = Loadable(lazy(() => import('../views/login')));
 
@@ -27,33 +26,38 @@ const Email = Loadable(lazy(() => import('views/email')));
 const Advisors = Loadable(lazy(() => import('views/advisors')));
 const AdvisorView = Loadable(lazy(() => import('views/advisors/AdvisorView')));
 const AdvisorEdit = Loadable(lazy(() => import('views/advisors/AdvisorEdit')));
+const Settings = Loadable(lazy(() => import('views/settings')));
+const Profile = Loadable(lazy(() => import('views/profile')));
+
 
 const AppRoutes = () => {
 
     const auth = useSelector(state => state.auth);
-    const role = auth.userData.role;
-    console.log(role)
+    const role = auth.userData?.role;
+    if(auth.accessToken && auth.accessToken!=="" && role !== undefined) console.log(role)
+    else console.log(role)
     return (
         <Routes>
             <Route exact path="/" element={<MinimalLayout/>} >
                 <Route index element={
-                    auth.accessToken === "" ? <Login /> : <Navigate to={role === 'admin' ? "/advisors" : "/portfolio"} />
+                    (auth.accessToken && auth.accessToken!=="" && role !== undefined) ? <Navigate to={role === 'admin' ? "/advisors" : "/portfolio"} replace /> : <Login />
                 }/>
                 <Route exact path="login" element={
-                    auth.accessToken === "" ? <Login /> : <Navigate to={role === 'admin' ? "/advisors" : "/portfolio"} />
+                    (auth.accessToken && auth.accessToken!=="" && role !== undefined) ? <Navigate to={role === 'admin' ? "/advisors" : "/portfolio"} replace /> : <Login />
                 } />
             </Route>
             <Route
-                path="/"
+                path=""
                 element={
-                    auth.accessToken === "" ? <Navigate to="/login" /> : <MainLayout />
+                    (auth.accessToken && auth.accessToken!=="" && role !== undefined) ? <MainLayout /> : <Navigate to="/login" replace />
                 }
             >
                 {
-                    role === 'admin' ? <>
+                    role && (role === 'admin' ? <>
                         <Route path="advisors" element={<Advisors />} />
                         <Route path="advisor/view/:id" element={<AdvisorView />} />
                         <Route path="advisor/edit/:id" element={<AdvisorEdit />} />
+                        <Route path="settings" element={<Settings />} />
                     </> : <>
                         <Route path="portfolio" element={<Portfolio />} />
                         <Route exact path="portfolio/graph" element={<PortfolioGraph />} />
@@ -61,7 +65,7 @@ const AppRoutes = () => {
                         <Route path="chat" element={<Chat />} />
                         <Route path="calendar" element={<Calendar />} />
                         <Route path="email" element={<Email />} />
-                    </>
+                    </>)
                 }
                 <Route path="client/details" element={<ClientDetails />}>
                     <Route path="overview/:id" element={<ClientOverview />} />
@@ -70,8 +74,9 @@ const AppRoutes = () => {
                     <Route path="reports/:id" element={<ClientReports />} />
                     <Route path="fees/:id" element={<ClientFees />} />
                 </Route>
+                <Route path="profile" element={<Profile />} />
             </Route>
-
+            <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
     );
 };

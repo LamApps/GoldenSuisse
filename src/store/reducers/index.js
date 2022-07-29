@@ -12,8 +12,8 @@ const config = useJwt.jwtConfig;
 // **  Initial State
 const initialState = {
     userData: JSON.parse(localStorage.getItem('userData')) || {},
-    [config.storageTokenKeyName]: localStorage.getItem(config.storageTokenKeyName) || "",
-    [config.storageRefreshTokenKeyName]: localStorage.getItem(config.storageRefreshTokenKeyName) || "",
+    [config.storageTokenKeyName]: localStorage.getItem(config.storageTokenKeyName) || null,
+    [config.storageRefreshTokenKeyName]: localStorage.getItem(config.storageRefreshTokenKeyName) || null,
   }
   
 const authReducer = (state = initialState, action) => {
@@ -26,9 +26,9 @@ const authReducer = (state = initialState, action) => {
             [action.config.storageRefreshTokenKeyName]: action[action.config.storageRefreshTokenKeyName]
         }
         case 'LOGOUT':
-        const obj = { ...action }
-        delete obj.type
-        return { ...state, userData: {}, ...obj }
+            const obj = { ...action }
+            delete obj.type
+            return { ...state, userData: {}, ...obj }
         default:
         return state
     }

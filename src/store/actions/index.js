@@ -22,7 +22,7 @@ export const handleLogin = data => {
     setTimeout(function(){
       dispatch({
         type: 'LOGIN',
-        data,
+        data: data.user,
         config,
         [config.storageTokenKeyName]: data.access_token,
         [config.storageRefreshTokenKeyName]: data.access_token

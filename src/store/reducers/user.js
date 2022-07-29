@@ -17,6 +17,7 @@ const persistConfig = {
 }
 
 const users = (state = initialState, action) => {
+  let allData, data;
   switch (action.type) {
     case 'GET_ALL_DATA':
       return { ...state, allData: action.data }
@@ -46,7 +47,7 @@ const users = (state = initialState, action) => {
         return { ...state, selectedUser: selectedUser }
 
     case 'UPDATE_USER':
-      let allData = [...state.allData];
+      allData = [...state.allData];
       for (let i=0; i<allData.length; i++) {
         const user = allData[i];
         if (user.id == action.data.id) {
@@ -54,7 +55,7 @@ const users = (state = initialState, action) => {
           break;
         }
       }
-      let data = [...state.data];
+      data = [...state.data];
       for (let i=0; i<data.length; i++) {
         const user = data[i];
         if (user.id == action.data.id) {

@@ -207,12 +207,23 @@ export default function componentStyleOverrides(theme) {
                 },
             }
         },
-        MuiDataGrid: {
+        MuiListItemText: {
             styleOverrides: {
                 root: {
-                    color: theme.colors?.primaryLight,
+                    "& .MuiTypography-body1": {
+                        color: '#ffffff',
+                    },
                 },
-            }
+            } 
+        },
+        MuiMenu: {
+            styleOverrides: {
+                root: {
+                    "& .MuiPaper-root": {
+                        borderRadius: '5px',
+                    },
+                },
+            } 
         }
     };
 }

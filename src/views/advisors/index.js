@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -45,7 +45,7 @@ import { IconSearch, IconDotsVertical, IconFileDescription, IconEdit, IconTrash,
 import Block from 'ui-component/Block';
 import { getData, getAllData, getUser, deleteUser } from 'store/actions/user'
 
-import AddSideBar from './AddSideBar';
+import AddSidebar from './AddSideBar';
 
 const CircleButton = styled(Button)(({ theme }) => ({
   borderRadius: '20px',
@@ -63,7 +63,7 @@ const ClientAvatar = ({avatar, status, name}) => {
     return status ? (<Badge anchorOrigin={{vertical: 'bottom', horizontal: 'right'}} color='success' badgeContent="" variant="dot" sx={{ "& .MuiBadge-dot": { margin: '3px', height: '5px', minWidth: '5px' } }} ><Avatar alt={name} src={avatar} sx={{width: 50, height: 50}}/></Badge>) : <Avatar alt={name} src={avatar} sx={{width: 50, height: 50}}/>;
 }
 
-const Clients = props => {
+const Advisors = props => {
   const theme = useTheme();
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -73,7 +73,9 @@ const Clients = props => {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentStatus, setCurrentStatus] = useState('')
-  const [deletingUserID, setDeletingUserID] = useState('');
+
+  const [currentId, setCurrentId] = useState();
+
 
   //unused state????
   const [currentRole, setCurrentRole] = useState('')
@@ -151,14 +153,10 @@ const Clients = props => {
     setCurrentPage(page)
   }
 
-  const handleDelete = (userId) => {
-    setAnchorEl(null);
-    setDeletingUserID(userId);
-    setDialogOpen(true);
-  }
 
-  const handleMenuClick = (event) => {
+  const handleMenuClick = (event, id) => {
     setAnchorEl(event.currentTarget);
+    setCurrentId(id)
   };
   const handleMenuClose = () => {
     setAnchorEl(null);
@@ -179,14 +177,14 @@ const Clients = props => {
 
   const handleConfirmDelete = () => {
     setDialogOpen(false);
-    if (!deletingUserID) return;
-    console.log(deletingUserID)
+    if (!currentId) return;
+    console.log(currentId)
 
     useJwt
-      .deleteAdvisor(deletingUserID)
+      .deleteAdvisor(currentId)
       .then(res => {
-        if (res.data.ResponseCode == 0) {
-          dispatch(deleteUser(deletingUserID))
+        if (res.data.ResponseCode === 0) {
+          dispatch(deleteUser(currentId))
           setSnackBarMsg({
             text: 'Successfully Deleted.',
             type: 'success'
@@ -207,8 +205,8 @@ const Clients = props => {
         setSnackBarMsg({
             text: 'Network error',
             type: 'error'
-          })
-          setSnackBarOpen(true);
+        })
+        setSnackBarOpen(true);
       })
   }
 
@@ -222,7 +220,7 @@ const Clients = props => {
                     <Typography component="p" variant="h1">{store?.allData.length}</Typography>
                     <Typography component="p" variant="body1">Total Advisors</Typography>
                 </Box>
-                <Button variant='contained' onClick={()=>handleAddSidebar()}><IconPlus size={18} stroke={1} /> ADD NEW USER</Button>
+                <Button variant='contained' onClick={handleAddSidebar}><IconPlus size={18} stroke={1} /> ADD NEW USER</Button>
             </Box>
           </Block>
         </Grid>
@@ -283,7 +281,7 @@ const Clients = props => {
                             <Box sx={{display: 'flex', alignItems: 'center'}}>
                                 <ClientAvatar avatar={item.avatar_url} name={item.fullName} />
                                 <Box sx={{ml: 1}}>
-                                    <Link component={RouterLink} to={"/advisor/"+item.id} underline='none' sx={{color: theme.palette.primary.main}} onClick={() => dispatch(getUser(item.id))}>{item.fullName}</Link>
+                                    <Link component={RouterLink} to={"/advisor/view/"+item.id} underline='none' sx={{color: theme.palette.primary.main}} onClick={() => dispatch(getUser(item.id))}>{item.fullName}</Link>
                                     <Typography variant='body2'>@{item.username}</Typography>
                                 </Box>
                             </Box>
@@ -298,7 +296,7 @@ const Clients = props => {
                                 aria-controls={popperOpen ? 'vertical-menu' : undefined}
                                 aria-haspopup="true"
                                 aria-expanded={popperOpen ? 'true' : undefined}
-                                onClick={handleMenuClick}
+                                onClick={(e)=>handleMenuClick(e, item.id)}
                             >
                                 <IconDotsVertical size={16} stroke={1}></IconDotsVertical>
                             </IconButton>
@@ -310,19 +308,19 @@ const Clients = props => {
                                     'aria-labelledby': 'vertical-button',
                                 }}
                             >
-                                <MenuItem onClick={()=>{ setAnchorEl(null); dispatch(getUser(item.id)); navigate('/advisor/view/'+item.id); }}>
+                                <MenuItem onClick={()=>{ setAnchorEl(null); dispatch(getUser(currentId)); navigate('/advisor/view/'+currentId); }}>
                                     <ListItemIcon>
                                         <IconFileDescription size={16} stroke={1} />
                                     </ListItemIcon>
                                     <ListItemText>Details</ListItemText>
                                 </MenuItem>
-                                <MenuItem onClick={()=>{ setAnchorEl(null); dispatch(getUser(item.id)); navigate('/advisor/edit/'+item.id); }}>
+                                <MenuItem onClick={()=>{ setAnchorEl(null); dispatch(getUser(currentId)); navigate('/advisor/edit/'+currentId); }}>
                                     <ListItemIcon>
                                         <IconEdit size={16} stroke={1} />
                                     </ListItemIcon>
                                     <ListItemText>Edit</ListItemText>
                                 </MenuItem>
-                                <MenuItem onClick={handleDelete}>
+                                <MenuItem onClick={()=>{setAnchorEl(null); setDialogOpen(true);}}>
                                     <ListItemIcon>
                                         <IconTrash size={16} stroke={1} />
                                     </ListItemIcon>
@@ -372,10 +370,10 @@ const Clients = props => {
         open={rightOpen}
         onClose={()=>{setRightOpen(false)}}
       >
-        <AddSideBar handleAddSidebar={handleAddSidebar} setSnackBarMsg={setSnackBarMsg} setSnackBarOpen={setSnackBarOpen} />
+        <AddSidebar handleAddSidebar={handleAddSidebar} setSnackBarMsg={setSnackBarMsg} setSnackBarOpen={setSnackBarOpen} />
       </Drawer>
     </>
   )
 }
 
-export default Clients;
+export default Advisors;

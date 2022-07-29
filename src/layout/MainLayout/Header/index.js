@@ -55,10 +55,10 @@ const Header = ({ handleLeftDrawerToggle }) => {
             </Box>
 
             {/* header search */}
-            <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{ flexGrow: 1, display: {xs: 'none', sm: 'none', md: 'block'} }}>
                 <Typography component="p" variant="p" textAlign={'center'}>Wealth Management System</Typography>
             </Box>
-            <Box sx={{ display: 'flex', flexGrow: 1, alignItems:'center', justifyContent:'flex-end' }} >
+            {/* <Box sx={{ display: 'flex', flexGrow: 1, alignItems:'center', justifyContent:'flex-end' }} >
                 <Typography component="p" variant="p" color={theme.palette.grey[900]}>Updated 20 Feb 2022, 14:40</Typography>
                 <ButtonBase sx={{ marginLeft: '10px', borderRadius: '12px', overflow: 'hidden' }}>
                     <Avatar
@@ -79,7 +79,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
                         <IconRefresh stroke={1.5} size="1.3rem" />
                     </Avatar>
                 </ButtonBase>
-            </Box>
+            </Box> */}
 
             {/* notification & profile */}
             <NotificationSection />

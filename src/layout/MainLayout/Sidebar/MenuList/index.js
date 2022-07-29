@@ -1,11 +1,13 @@
 // project imports
 import NavItem from './NavItem';
-import menuItem from 'menu-items';
+import adminItem from 'menu-items/admin';
+import advisorItem from 'menu-items/advisor';
 import { Divider, Box } from '@mui/material';
 
 // ==============================|| SIDEBAR MENU LIST ||============================== //
 
-const MenuList = () => {
+const MenuList = ({userData}) => {
+    const menuItem = userData?.role === 'admin' ? adminItem : advisorItem;
     const navItems = menuItem.map((item, index) => {
         return index<menuItem.length-1 ? <Box key={item.id}><NavItem item={item} /><Divider sx={{opacity: 0.2}}></Divider></Box> : <NavItem key={item.id} item={item} />;
     });

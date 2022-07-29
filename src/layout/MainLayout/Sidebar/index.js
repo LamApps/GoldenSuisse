@@ -47,12 +47,12 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
                         <Typography sx={{fontSize: 18, fontWeight: 'bold', textAlign: 'center', paddingBottom: '20px', borderBottom: 'solid 1px #585858'}}>{userData?.fullName}</Typography>
                         <Typography color={theme.palette.text.disabled} sx={{fontSize: 12, textAlign: 'right', mt: '10px', mb: '20px'}}>Acc. {userData?.customer_id}</Typography>
                     </Box>
-                    <MenuList />
+                    <MenuList userData={userData} />
                 </PerfectScrollbar>
             </BrowserView>
             <MobileView>
                 <Box sx={{ px: 2 }}>
-                    <MenuList />
+                    <MenuList userData={userData} />
                 </Box>
             </MobileView>
         </>

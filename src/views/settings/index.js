@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 
-import { getUser } from 'store/actions/user';
+import useJwt from 'utils/jwt/useJwt';
 
 import {
   Box,
@@ -11,10 +9,9 @@ import {
   Tab,
 } from '@mui/material';
 
-import { IconUser, IconInfoCircle } from '@tabler/icons';
+import { IconCurrencyDollar } from '@tabler/icons';
 
-import AccountSettings from './AccountSettings';
-import Information from './Information';
+import BpsFees from './BpsFees';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -49,40 +46,41 @@ function a11yProps(index) {
     };
 }
 
-const AdvisorEdit = () => {
-    const store = useSelector(state => state.users),
-    dispatch = useDispatch(),
-    { id } = useParams()
-
+const Settings = () => {
+    const [data, setData] = useState(null);
     const [value, setValue] = useState(0);
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
     };
 
-        // ** Function to get user on mount
     useEffect(() => {
-        dispatch(getUser(parseInt(id)))
-        return () => dispatch(getUser(parseInt(0)))
-    }, [dispatch, id])
+        useJwt
+          .loadSettingsInfo()
+          .then(res => {
+            if (res.data.ResponseCode == 0) {
+              setData(res.data.ResponseResult);
+    
+            } else {
+              console.log(res.data.ResponseCode)
+            }
+          })
+          .catch(err => console.log(err))
+    }, [])
 
     return (
       <>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleChange} aria-label="advisor edit tabs">
-                <Tab icon={<IconUser size={18} stroke={2} />} iconPosition="start" label="Account" {...a11yProps(0)} />
-                <Tab icon={<IconInfoCircle size={18} stroke={2} />} iconPosition="start" label="Information" {...a11yProps(1)} />
+                <Tab icon={<IconCurrencyDollar size={18} stroke={2} />} iconPosition="start" label="BPS Fees" {...a11yProps(0)} />
             </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-            <AccountSettings selectedUser={store.selectedUser} />
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-            <Information selectedUser={store.selectedUser} />
+            {data && <BpsFees data={data} />}
         </TabPanel>
       </>
         
     )
 }
 
-export default AdvisorEdit;
+export default Settings;
