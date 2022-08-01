@@ -4,6 +4,8 @@ import calendarReducer from './calendar';
 import clientsReducer from './clients';
 import chatReducer from './chat';
 import usersReducer from './user';
+import navbarReducer from './navbar';
+
 import useJwt from 'utils/jwt/useJwt';
 
 const config = useJwt.jwtConfig;
@@ -41,6 +43,7 @@ const reducer = {
     clients: clientsReducer,
     chat: chatReducer,
     users: usersReducer,
+    navbar: navbarReducer,
 };
 
 

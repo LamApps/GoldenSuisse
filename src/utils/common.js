@@ -150,3 +150,13 @@ export const dateStartTime = (time) => {
   const diff = (new Date()).getTimezoneOffset() * 60 * 1000;
   return new Date(dateStr).getTime() - diff;
 }
+
+export const formatReportDate = (strDate) => {
+  if (strDate && strDate.includes(':')) {
+    const nodes = strDate.split(':');
+    if (nodes.length == 3) {
+      return nodes[0] + ':' + nodes[1];
+    }
+  }
+  return strDate;
+}

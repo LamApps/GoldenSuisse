@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import {
@@ -18,16 +18,16 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import useJwt from 'utils/jwt/useJwt';
-import { updateUser } from 'store/actions/user';
+import { handleLogin } from 'store/actions'
 
-const Information = ({selectedUser}) => {
+const InformationTab = ({data}) => {
     const dispatch = useDispatch();
 
     // ** State
-    const [bio, setBio] = useState(selectedUser?.brief || '')
-    const [company, setCompany] = useState(selectedUser?.company || '')
-    const [dob, setDob] = useState(new Date(selectedUser?.date_of_birth) || new Date())
-    const [gender, setGender] = useState(selectedUser?.gender)
+    const [bio, setBio] = useState(data?.brief || '')
+    const [company, setCompany] = useState(data?.company || '')
+    const [dob, setDob] = useState(new Date(data?.date_of_birth) || new Date())
+    const [gender, setGender] = useState(data?.gender)
 
     const [validation, setValidation] = useState({
         bio: true,
@@ -73,7 +73,6 @@ const Information = ({selectedUser}) => {
         }
     
         const uData = {
-          user_id: selectedUser.id,
           brief: bio,
           date_of_birth: dob,
           gender: gender,
@@ -84,12 +83,20 @@ const Information = ({selectedUser}) => {
           .updateAdvisorInfo(uData)
           .then(res => {
             if (res.data.ResponseCode == 0) {
-              dispatch(updateUser(res.data.ResponseResult))
+              const updatedUserData = { ...data }
+              updatedUserData.date_of_birth = dob;
+              updatedUserData.gender = gender;
+              updatedUserData.brief = bio;
+              updatedUserData.company = company;
+      
+              const updtedAuthData = { user: updatedUserData, access_token: useJwt.getToken(), refreshToken: '' }
+              dispatch(handleLogin(updtedAuthData))
+
               setSnackBarMsg({
                 text: 'Successfully Updated.',
                 type: 'success'
               })
-                setSnackBarOpen(true);
+              setSnackBarOpen(true);
               
             } else {
               console.log(res)
@@ -108,13 +115,6 @@ const Information = ({selectedUser}) => {
               })
             setSnackBarOpen(true);
           })
-    }
-
-    const onReset = () => {
-        setBio(selectedUser?.brief);
-        setCompany(selectedUser?.company);
-        setDob(new Date(selectedUser?.date_of_birth));
-        setGender(selectedUser?.gender);
     }
 
     return (
@@ -184,7 +184,6 @@ const Information = ({selectedUser}) => {
                 </Grid>
                 <Grid item xs={12} sm={12} md={12}>
                     <Button color="primary" variant="contained" type='submit' sx={{mr: 2}}>SAVE CHANGES</Button> 
-                    <Button color="secondary" variant="contained" onClick={onReset}>RESET</Button> 
                 </Grid>
             </Grid>        
             </form>
@@ -202,4 +201,4 @@ const Information = ({selectedUser}) => {
     )
 }
 
-export default Information;
+export default InformationTab;

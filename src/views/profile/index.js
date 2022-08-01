@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import axios from 'axios'
 
 import PropTypes from 'prop-types';
@@ -15,7 +15,9 @@ import {
 
 import { IconUser, IconInfoCircle, IconLock } from '@tabler/icons';
 
-import General from './General';
+import GeneralTab from './GeneralTab';
+import InformationTab from './InformationTab';
+import PasswordTab from './PasswordTab';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -76,18 +78,18 @@ const Profile = () => {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleChange} aria-label="advisor edit tabs">
                 <Tab icon={<IconUser size={18} stroke={2} />} iconPosition="start" label="General" {...a11yProps(0)} />
-                <Tab icon={<IconInfoCircle size={18} stroke={2} />} iconPosition="start" label="Information" {...a11yProps(0)} />
-                <Tab icon={<IconLock size={18} stroke={2} />} iconPosition="start" label="Change Password" {...a11yProps(0)} />
+                <Tab icon={<IconInfoCircle size={18} stroke={2} />} iconPosition="start" label="Information" {...a11yProps(1)} />
+                <Tab icon={<IconLock size={18} stroke={2} />} iconPosition="start" label="Change Password" {...a11yProps(2)} />
             </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-            {data && <General data={data} />}
+            {userData && <GeneralTab data={userData} />}
         </TabPanel>
         <TabPanel value={value} index={1}>
-            {data && <General data={data} />}
+            {userData && <InformationTab data={userData} />}
         </TabPanel>
         <TabPanel value={value} index={2}>
-            {data && <General data={data} />}
+            <PasswordTab />
         </TabPanel>
       </>
         
