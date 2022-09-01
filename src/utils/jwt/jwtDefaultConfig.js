@@ -38,6 +38,13 @@ export default {
   clientTransactionsEndpoint: `${process.env.REACT_APP_BASE_API_URL}/client/transactions`,
   clientCardTransactionsEndpoint: `${process.env.REACT_APP_BASE_API_URL}/client/card_transactions`,
 
+  sendEmailEndpoint: `${process.env.REACT_APP_BASE_API_URL}/email/send`,
+  getSentMailList: `${process.env.REACT_APP_BASE_API_URL}/email/sent`,
+  getMailContent: `${process.env.REACT_APP_BASE_API_URL}/email/view`,
+  saveMailDraft: `${process.env.REACT_APP_BASE_API_URL}/email/saveDraft`,
+  getMailDraft: `${process.env.REACT_APP_BASE_API_URL}/email/draft`,
+
+
   // ** This will be prefixed in authorization header with token
   // ? e.g. Authorization: Bearer <token>
   tokenType: 'Bearer',

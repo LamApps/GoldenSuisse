@@ -22,6 +22,13 @@ const ClientFees = Loadable(lazy(() => import('views/clients/ClientFees')));
 const Chat = Loadable(lazy(() => import('views/chat')));
 const Calendar = Loadable(lazy(() => import('views/calendar')));
 const Email = Loadable(lazy(() => import('views/email')));
+const EmailInbox = Loadable(lazy(() => import('views/email/Inbox')));
+const EmailSent = Loadable(lazy(() => import('views/email/SentMail')));
+// const EmailSetting = Loadable(lazy(() => import('views/email/Setting')));
+const EmailTrash = Loadable(lazy(() => import('views/email/Trash')));
+const EmailDraft = Loadable(lazy(() => import('views/email/Draft')));
+const EmailView = Loadable(lazy(() => import('views/email/EmailView')));
+const EmailCompose = Loadable(lazy(() => import('views/email/Compose')));
 
 const Advisors = Loadable(lazy(() => import('views/advisors')));
 const AdvisorView = Loadable(lazy(() => import('views/advisors/AdvisorView')));
@@ -34,8 +41,7 @@ const AppRoutes = () => {
 
     const auth = useSelector(state => state.auth);
     const role = auth.userData?.role;
-    if(auth.accessToken && auth.accessToken!=="" && role !== undefined) console.log(role)
-    else console.log(role)
+
     return (
         <Routes>
             <Route exact path="/" element={<MinimalLayout/>} >
@@ -64,7 +70,15 @@ const AppRoutes = () => {
                         <Route path="clients" element={<Clients />} />
                         <Route path="chat" element={<Chat />} />
                         <Route path="calendar" element={<Calendar />} />
-                        <Route path="email" element={<Email />} />
+                        <Route path="email" element={<Email />}>
+                            <Route exact index element={<EmailInbox />}/>
+                            <Route exact path="sent" element={<EmailSent />}/>
+                            <Route exact path="draft" element={<EmailDraft />}/>
+                            <Route exact path="trash" element={<EmailTrash />}/>
+                            {/* <Route exact path="setting" element={<EmailSetting />}/> */}
+                            <Route exact path="view/:id" element={<EmailView />}/>
+                            <Route exact path="compose" element={<EmailCompose />}/>
+                        </Route>
                     </>)
                 }
                 <Route path="client/details" element={<ClientDetails />}>

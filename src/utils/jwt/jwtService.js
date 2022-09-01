@@ -251,4 +251,23 @@ export default class JwtService {
     return axios.get(this.jwtConfig.clientCardTransactionsEndpoint, ...args)
   }
 
+  sendEmail(...args) {
+    return axios.post(this.jwtConfig.sendEmailEndpoint, ...args)
+  }
+
+  getSentMails(advisor_id) {
+    return axios.get(`${this.jwtConfig.getSentMailList}/${advisor_id}`)
+  }
+
+  getMailContent(id) {
+    return axios.get(`${this.jwtConfig.getMailContent}/${id}`)
+  }
+  
+  saveMailDraft(...args) {
+    return axios.post(this.jwtConfig.saveMailDraft, ...args)
+  }
+
+  getMailDraft(advisor_id) {
+    return axios.get(`${this.jwtConfig.getMailDraft}/${advisor_id}`)
+  }
 }
